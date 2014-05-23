@@ -1,0 +1,27 @@
+begin
+	int a, b, c, d
+	string e
+
+	e = "=== Programa teste ==="
+	puts e
+
+	puts "Digite o valote de A:"
+	gets a
+
+	puts "Digite o valote de B:"
+	gets b
+
+	if a < b
+		c = a + b
+	else
+		c = a - b
+	end
+
+	puts "C é igual a:"
+	puts c
+
+	d = c * a + b
+
+	puts "D é igual a:"
+	puts d
+end
