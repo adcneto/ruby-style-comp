@@ -1,5 +1,5 @@
 begin
-	int a, b, c, d
+	int a, b, c, d, i
 	string e
 
 	e = "=== Programa teste ==="
@@ -24,4 +24,14 @@ begin
 
 	puts "D é igual a:"
 	puts d
+
+	i = 0
+	while i < 10
+		puts i
+		i = i + 1
+	end
+
+	do
+		puts "Entrei e já vou saindo! ;)"
+	while i < 10
 end
