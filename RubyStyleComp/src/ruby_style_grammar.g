@@ -6,7 +6,7 @@ program		:		"begin" (declare)* commands end
 end 			:		"end"
 					;
 
-declare		:		(type T_id (T_comma T_id)*)*
+declare		:		(type T_id (T_comma T_id)*)
 					;
 
 type 			:		"int" | "string" | "float"
