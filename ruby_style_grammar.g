@@ -1,9 +1,6 @@
 class RubyStyleParser extends Parser;
 
-program		:		"begin" (declare)* commands end
-					;
-
-end 			:		"end"
+program		:		"begin" {System.out.println("Entrou no begin");} (declare)* commands "end"
 					;
 
 declare		:		(type T_id (T_comma T_id)*)
@@ -33,10 +30,10 @@ cmdWrite	:		"puts" (term | expr)+
 cmdRead		:		"gets" T_id
 					;
 
-cmdIf 		:		"if" cond commands ("else" commands)* end
+cmdIf 		:		"if" cond commands ("else" commands)* "endif"
 					;
 
-cmdWhile	:		"while" commands end
+cmdWhile	:		"while" commands "endwhile"
 					;
 
 cmdDo			:		"do" commands "while" cond
@@ -55,6 +52,9 @@ T_id		:		('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
 T_num		:		('0'..'9')+
 				;
 
+T_comma : 	','
+				;
+
 T_text	:		'\"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '\"'
 				;
 
@@ -65,4 +65,7 @@ Op_arit	:		'+' | '-' | '*' | '/'
 				;
 
 Op_rel	:		'<' | '>' | "<=" | ">=" | "==" | "!="
+				;
+
+T_ws    :		('\n' | '\r' | '\t' | ' ') { $setType(Token.SKIP); }
 				;

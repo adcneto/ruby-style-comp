@@ -1,0 +1,25 @@
+begin
+	int a, b, c, d, i
+	string e
+
+	e = "Programateste"
+	puts e
+
+	puts "DigiteovalotedeA"
+	gets a
+
+	puts "DigiteovalotedeB"
+	gets b
+
+	if a < b
+		c = a + b
+	else
+		c = a - b
+	endif
+
+	puts "Ceiguala"
+	puts c
+
+
+	a =
+end

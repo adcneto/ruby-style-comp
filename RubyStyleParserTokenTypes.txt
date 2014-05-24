@@ -15,6 +15,9 @@ LITERAL_puts="puts"=15
 LITERAL_gets="gets"=16
 LITERAL_if="if"=17
 LITERAL_else="else"=18
-LITERAL_while="while"=19
-LITERAL_do="do"=20
-Op_rel=21
+LITERAL_endif="endif"=19
+LITERAL_while="while"=20
+LITERAL_endwhile="endwhile"=21
+LITERAL_do="do"=22
+Op_rel=23
+T_ws=24
