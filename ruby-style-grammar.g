@@ -6,7 +6,7 @@ program		:		"begin" (declare)* commands end
 end 			:		"end"
 					;
 
-declare		:		(type T_id (T_comma Tid)*)*
+declare		:		(type T_id (T_comma T_id)*)*
 					;
 
 type 			:		"int" | "string" | "float"
@@ -21,10 +21,7 @@ command		:		cmdAttr | cmdWrite | cmdRead | cmdIf | cmdWhile | cmdDo
 cmdAttr		:		T_id Op_attr expr
 					;
 
-expr			:		term (aritOp term)*
-					;
-
-aritOp		:		Op_plus | Op_minus | Op_multi | Op_div
+expr			:		term (Op_arit term)*
 					;
 
 term 			:		T_id | T_num | T_text
@@ -45,8 +42,26 @@ cmdWhile	:		"while" commands end
 cmdDo			:		"do" commands "while" cond
 					;
 
-cond 			:		term (logOp term)+
+cond 			:		term (Op_rel term)+
 					;
+ 
 
-logOp			:		Op_equals | Op_least | Op_greater | Op_diff | Op_leq | Op_get
-					;
+class RubyStyleLexer extends Lexer;
+
+
+T_id		:		('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
+				;
+
+T_num		:		('0'..'9')+
+				;
+
+T_text	:		'\"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '\"'
+				;
+
+Op_attr	:		'='
+				;
+
+Op_arit	:		'+' | '-' | '*' | '/'
+
+Op_rel	:		'<' | '>' | "<=" | ">=" | "==" | "!="
+				;
