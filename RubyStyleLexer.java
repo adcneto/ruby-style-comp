@@ -84,15 +84,15 @@ tryAgain:
 					theRetToken=_returnToken;
 					break;
 				}
-				case ',':
-				{
-					mT_comma(true);
-					theRetToken=_returnToken;
-					break;
-				}
 				case '"':
 				{
 					mT_text(true);
+					theRetToken=_returnToken;
+					break;
+				}
+				case ',':
+				{
+					mT_comma(true);
 					theRetToken=_returnToken;
 					break;
 				}
@@ -156,7 +156,7 @@ tryAgain:
 		matchRange('a','z');
 		}
 		{
-		_loop32:
+		_loop30:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -190,7 +190,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop32;
+				break _loop30;
 			}
 			}
 		} while (true);
@@ -208,32 +208,19 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt35=0;
-		_loop35:
+		int _cnt33=0;
+		_loop33:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt35>=1 ) { break _loop35; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt33>=1 ) { break _loop33; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt35++;
+			_cnt33++;
 		} while (true);
 		}
-		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
-			_token = makeToken(_ttype);
-			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
-		}
-		_returnToken = _token;
-	}
-	
-	public final void mT_comma(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
-		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = T_comma;
-		int _saveIndex;
-		
-		match(',');
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
@@ -246,9 +233,9 @@ tryAgain:
 		_ttype = T_text;
 		int _saveIndex;
 		
-		match('\"');
+		match('"');
 		{
-		_loop39:
+		_loop36:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -287,12 +274,25 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop39;
+				break _loop36;
 			}
 			}
 		} while (true);
 		}
-		match('\"');
+		match('"');
+		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
+			_token = makeToken(_ttype);
+			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
+		}
+		_returnToken = _token;
+	}
+	
+	public final void mT_comma(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+		int _ttype; Token _token=null; int _begin=text.length();
+		_ttype = T_comma;
+		int _saveIndex;
+		
+		match(',');
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));

@@ -18,13 +18,13 @@ command		:		cmdAttr | cmdWrite | cmdRead | cmdIf | cmdWhile
 cmdAttr		:		T_id Op_attr expr
 					;
 
-expr			:		term (Op_arit term)+
+expr			:		term (Op_arit term)*
 					;
 
 term 			:		T_id | T_num | T_text
 					;
 
-cmdWrite	:		"puts" (term | expr)+
+cmdWrite	:		"puts" term
 					;
 
 cmdRead		:		"gets" T_id
@@ -56,10 +56,10 @@ T_id		:		('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
 T_num		:		('0'..'9')+
 			;
 
-T_comma 	: 		','
+T_text		:		'"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '"'
 			;
-
-T_text		:		'\"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '\"'
+			
+T_comma 	: 		','
 			;
 
 Op_attr		:		":="

@@ -211,23 +211,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			match(LITERAL_puts);
-			{
-			int _cnt20=0;
-			_loop20:
-			do {
-				if ((LA(1)==T_num||LA(1)==T_text)) {
-					term();
-				}
-				else if ((LA(1)==T_num||LA(1)==T_text)) {
-					expr();
-				}
-				else {
-					if ( _cnt20>=1 ) { break _loop20; } else {throw new NoViableAltException(LT(1), getFilename());}
-				}
-				
-				_cnt20++;
-			} while (true);
-			}
+			term();
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -256,14 +240,14 @@ public RubyStyleParser(ParserSharedInputState state) {
 			cond();
 			commands();
 			{
-			_loop24:
+			_loop22:
 			do {
 				if ((LA(1)==LITERAL_else)) {
 					match(LITERAL_else);
 					commands();
 				}
 				else {
-					break _loop24;
+					break _loop22;
 				}
 				
 			} while (true);
@@ -296,7 +280,6 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			term();
 			{
-			int _cnt16=0;
 			_loop16:
 			do {
 				if ((LA(1)==Op_arit)) {
@@ -304,16 +287,15 @@ public RubyStyleParser(ParserSharedInputState state) {
 					term();
 				}
 				else {
-					if ( _cnt16>=1 ) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
+					break _loop16;
 				}
 				
-				_cnt16++;
 			} while (true);
 			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_6);
+			recover(ex,_tokenSet_5);
 		}
 	}
 	
@@ -322,6 +304,11 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			switch ( LA(1)) {
+			case T_id:
+			{
+				match(T_id);
+				break;
+			}
 			case T_num:
 			{
 				match(T_num);
@@ -340,7 +327,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_7);
+			recover(ex,_tokenSet_6);
 		}
 	}
 	
@@ -350,24 +337,24 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			term();
 			{
-			int _cnt28=0;
-			_loop28:
+			int _cnt26=0;
+			_loop26:
 			do {
 				if ((LA(1)==Op_rel)) {
 					match(Op_rel);
 					term();
 				}
 				else {
-					if ( _cnt28>=1 ) { break _loop28; } else {throw new NoViableAltException(LT(1), getFilename());}
+					if ( _cnt26>=1 ) { break _loop26; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt28++;
+				_cnt26++;
 			} while (true);
 			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_8);
+			recover(ex,_tokenSet_7);
 		}
 	}
 	
@@ -430,19 +417,14 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 4186208L, 0L};
+		long[] data = { 8360032L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 8384608L, 0L};
-		return data;
-	}
-	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
-	private static final long[] mk_tokenSet_8() {
 		long[] data = { 2064448L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
+	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 	
 	}
