@@ -45,7 +45,6 @@ public RubyStyleLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("end", this), new Integer(5));
 	literals.put(new ANTLRHashString("begin", this), new Integer(4));
 	literals.put(new ANTLRHashString("int", this), new Integer(8));
-	literals.put(new ANTLRHashString("do", this), new Integer(22));
 	literals.put(new ANTLRHashString("puts", this), new Integer(15));
 	literals.put(new ANTLRHashString("string", this), new Integer(9));
 	literals.put(new ANTLRHashString("gets", this), new Integer(16));
@@ -97,9 +96,21 @@ tryAgain:
 					theRetToken=_returnToken;
 					break;
 				}
+				case ':':
+				{
+					mOp_attr(true);
+					theRetToken=_returnToken;
+					break;
+				}
 				case '*':  case '+':  case '-':  case '/':
 				{
 					mOp_arit(true);
+					theRetToken=_returnToken;
+					break;
+				}
+				case '!':  case '<':  case '=':  case '>':
+				{
+					mOp_rel(true);
 					theRetToken=_returnToken;
 					break;
 				}
@@ -110,15 +121,7 @@ tryAgain:
 					break;
 				}
 				default:
-					if ((LA(1)=='=')) {
-						mOp_attr(true);
-						theRetToken=_returnToken;
-					}
-					else if ((_tokenSet_0.member(LA(1)))) {
-						mOp_rel(true);
-						theRetToken=_returnToken;
-					}
-				else {
+				{
 					if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}
 				else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
@@ -153,7 +156,7 @@ tryAgain:
 		matchRange('a','z');
 		}
 		{
-		_loop33:
+		_loop32:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -187,7 +190,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop33;
+				break _loop32;
 			}
 			}
 		} while (true);
@@ -205,17 +208,17 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt36=0;
-		_loop36:
+		int _cnt35=0;
+		_loop35:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt36>=1 ) { break _loop36; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt35>=1 ) { break _loop35; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt36++;
+			_cnt35++;
 		} while (true);
 		}
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
@@ -245,7 +248,7 @@ tryAgain:
 		
 		match('\"');
 		{
-		_loop40:
+		_loop39:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -284,7 +287,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop40;
+				break _loop39;
 			}
 			}
 		} while (true);
@@ -302,7 +305,7 @@ tryAgain:
 		_ttype = Op_attr;
 		int _saveIndex;
 		
-		match('=');
+		match(":=");
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
@@ -365,17 +368,17 @@ tryAgain:
 			break;
 		}
 		default:
-			if ((LA(1)=='<')) {
-				match('<');
-			}
-			else if ((LA(1)=='>')) {
-				match('>');
-			}
-			else if ((LA(1)=='<')) {
+			if ((LA(1)=='<') && (LA(2)=='=')) {
 				match("<=");
 			}
-			else if ((LA(1)=='>')) {
+			else if ((LA(1)=='>') && (LA(2)=='=')) {
 				match(">=");
+			}
+			else if ((LA(1)=='<') && (true)) {
+				match('<');
+			}
+			else if ((LA(1)=='>') && (true)) {
+				match('>');
 			}
 		else {
 			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
@@ -430,10 +433,5 @@ tryAgain:
 	}
 	
 	
-	private static final long[] mk_tokenSet_0() {
-		long[] data = { 8070450540837863424L, 0L, 0L};
-		return data;
-	}
-	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	
 	}

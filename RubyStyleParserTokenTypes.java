@@ -21,7 +21,6 @@ public interface RubyStyleParserTokenTypes {
 	int LITERAL_endif = 19;
 	int LITERAL_while = 20;
 	int LITERAL_endwhile = 21;
-	int LITERAL_do = 22;
-	int Op_rel = 23;
-	int T_ws = 24;
+	int Op_rel = 22;
+	int T_ws = 23;
 }

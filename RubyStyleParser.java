@@ -180,11 +180,6 @@ public RubyStyleParser(ParserSharedInputState state) {
 				cmdWhile();
 				break;
 			}
-			case LITERAL_do:
-			{
-				cmdDo();
-				break;
-			}
 			default:
 			{
 				throw new NoViableAltException(LT(1), getFilename());
@@ -220,10 +215,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 			int _cnt20=0;
 			_loop20:
 			do {
-				if ((LA(1)==T_id||LA(1)==T_num||LA(1)==T_text)) {
+				if ((LA(1)==T_num||LA(1)==T_text)) {
 					term();
 				}
-				else if ((LA(1)==T_id||LA(1)==T_num||LA(1)==T_text)) {
+				else if ((LA(1)==T_num||LA(1)==T_text)) {
 					expr();
 				}
 				else {
@@ -295,27 +290,13 @@ public RubyStyleParser(ParserSharedInputState state) {
 		}
 	}
 	
-	public final void cmdDo() throws RecognitionException, TokenStreamException {
-		
-		
-		try {      // for error handling
-			match(LITERAL_do);
-			commands();
-			match(LITERAL_while);
-			cond();
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_5);
-		}
-	}
-	
 	public final void expr() throws RecognitionException, TokenStreamException {
 		
 		
 		try {      // for error handling
 			term();
 			{
+			int _cnt16=0;
 			_loop16:
 			do {
 				if ((LA(1)==Op_arit)) {
@@ -323,9 +304,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 					term();
 				}
 				else {
-					break _loop16;
+					if ( _cnt16>=1 ) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
+				_cnt16++;
 			} while (true);
 			}
 		}
@@ -340,11 +322,6 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			switch ( LA(1)) {
-			case T_id:
-			{
-				match(T_id);
-				break;
-			}
 			case T_num:
 			{
 				match(T_num);
@@ -373,24 +350,24 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			term();
 			{
-			int _cnt29=0;
-			_loop29:
+			int _cnt28=0;
+			_loop28:
 			do {
 				if ((LA(1)==Op_rel)) {
 					match(Op_rel);
 					term();
 				}
 				else {
-					if ( _cnt29>=1 ) { break _loop29; } else {throw new NoViableAltException(LT(1), getFilename());}
+					if ( _cnt28>=1 ) { break _loop28; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt29++;
+				_cnt28++;
 			} while (true);
 			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_5);
+			recover(ex,_tokenSet_8);
 		}
 	}
 	
@@ -418,7 +395,6 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"\"endif\"",
 		"\"while\"",
 		"\"endwhile\"",
-		"\"do\"",
 		"Op_rel",
 		"T_ws"
 	};
@@ -429,17 +405,17 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 5474144L, 0L};
+		long[] data = { 1279840L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 5472320L, 0L};
+		long[] data = { 1278016L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = { 3932192L, 0L};
+		long[] data = { 2883616L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
@@ -449,19 +425,24 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 	private static final long[] mk_tokenSet_5() {
-		long[] data = { 8355936L, 0L};
+		long[] data = { 4161632L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 8380512L, 0L};
+		long[] data = { 4186208L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 16773216L, 0L};
+		long[] data = { 8384608L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+	private static final long[] mk_tokenSet_8() {
+		long[] data = { 2064448L, 0L};
+		return data;
+	}
+	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	
 	}

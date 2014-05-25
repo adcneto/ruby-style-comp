@@ -18,6 +18,5 @@ LITERAL_else="else"=18
 LITERAL_endif="endif"=19
 LITERAL_while="while"=20
 LITERAL_endwhile="endwhile"=21
-LITERAL_do="do"=22
-Op_rel=23
-T_ws=24
+Op_rel=22
+T_ws=23

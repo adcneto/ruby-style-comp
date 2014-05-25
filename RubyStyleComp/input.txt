@@ -19,7 +19,7 @@ begin
 
 	puts "Ceiguala"
 	puts c
+        
+        c = a - b
 
-
-	a =
 end

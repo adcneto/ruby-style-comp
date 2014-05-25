@@ -12,13 +12,13 @@ type 			:		"int" | "string" | "float"
 commands	:		(command)*
 					;
 
-command		:		cmdAttr | cmdWrite | cmdRead | cmdIf | cmdWhile | cmdDo
+command		:		cmdAttr | cmdWrite | cmdRead | cmdIf | cmdWhile 
 					;
 
 cmdAttr		:		T_id Op_attr expr
 					;
 
-expr			:		term (Op_arit term)*
+expr			:		term (Op_arit term)+
 					;
 
 term 			:		T_id | T_num | T_text
@@ -36,36 +36,40 @@ cmdIf 		:		"if" cond commands ("else" commands)* "endif"
 cmdWhile	:		"while" commands "endwhile"
 					;
 
-cmdDo			:		"do" commands "while" cond
-					;
 
-cond 			:		term (Op_rel term)+
-					;
+cond 		:		term (Op_rel term)+
+			;
  
 
 class RubyStyleLexer extends Lexer;
 
+options
+{
+  caseSensitive = true;
+  charVocabulary = '\0'..'\377';
+  k =2;
+}
 
 T_id		:		('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
-				;
+			;
 
 T_num		:		('0'..'9')+
-				;
+			;
 
-T_comma : 	','
-				;
+T_comma 	: 		','
+			;
 
-T_text	:		'\"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '\"'
-				;
+T_text		:		'\"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '\"'
+			;
 
-Op_attr	:		'='
-				;
+Op_attr		:		":="
+			;
 
-Op_arit	:		'+' | '-' | '*' | '/'
-				;
+Op_arit		:		'+' | '-' | '*' | '/'
+			;
 
-Op_rel	:		'<' | '>' | "<=" | ">=" | "==" | "!="
-				;
+Op_rel		:		'<' | '>' | "<=" | ">=" | "==" | "!=" 
+			;
 
-T_ws    :		('\n' | '\r' | '\t' | ' ') { $setType(Token.SKIP); }
-				;
+T_ws    	:		('\n' | '\r' | '\t' | ' ') { $setType(Token.SKIP); }
+			;
