@@ -25,9 +25,6 @@ public class ConditionVerifier {
     }
     
     public boolean verify(){
-        System.out.println(operator);
-        System.out.println(left);
-        System.out.println(right);
         if(operator.equals(">"))
             return left > right;
         if(operator.equals("<"))
