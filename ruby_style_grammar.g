@@ -124,7 +124,17 @@ cmdIf 		:		"if" cond {
 											}
 					;
 
-cmdWhile	:		"while" commands "endwhile"
+cmdWhile	:		"while" cond {
+													CommandWhile cmd = new CommandWhile(cv);
+													program.add(cmd);
+													program.setCurrentBlock(cmd);
+													program.setCurrentScope("while");
+												}
+							commands 
+							"endwhile"  { 
+														program.setCurrentBlock(null); 
+														program.setCurrentScope("");
+													}
 					;
 
 

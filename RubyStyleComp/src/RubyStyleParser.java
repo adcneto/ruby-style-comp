@@ -374,8 +374,19 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			match(LITERAL_while);
+			cond();
+			
+																CommandWhile cmd = new CommandWhile(cv);
+																program.add(cmd);
+																program.setCurrentBlock(cmd);
+																program.setCurrentScope("while");
+															
 			commands();
 			match(LITERAL_endwhile);
+			
+																	program.setCurrentBlock(null); 
+																	program.setCurrentScope("");
+																
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -541,7 +552,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 2064448L, 0L};
+		long[] data = { 4161600L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());

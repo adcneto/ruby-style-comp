@@ -28,6 +28,9 @@ public class Program {
         } else if(currentScope.equals("else")){
             CommandIf cmdIf = (CommandIf) currentBlock;
             cmdIf.addToElseCommands(cmd);
+        } else if(currentScope.equals("while")){
+            CommandWhile cmdWhile = (CommandWhile) currentBlock;
+            cmdWhile.addToCommands(cmd);
         }
     }
     
