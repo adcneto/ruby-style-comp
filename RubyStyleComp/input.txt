@@ -1,4 +1,6 @@
 begin
 	int a
 	gets a
+	puts a
+	puts "Texto"
 end

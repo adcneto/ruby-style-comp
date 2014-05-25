@@ -58,10 +58,25 @@ cmdAttr		:		T_id Op_attr expr
 expr			:		term (Op_arit term)*
 					;
 
-term 			:		T_id | T_num | T_text
+term 			:		(T_id | T_num | T_text)
 					;
 
-cmdWrite	:		"puts" term
+cmdWrite	:		"puts" (T_id {
+												    symbol = table.getById(LT(0).getText());
+														if (symbol == null){
+													  	String errorMsg = "Variavel nao foi declarada";
+														  System.err.println(errorMsg);
+														  throw new RecognitionException(errorMsg);
+														}
+														else{
+													  	program.add(new CommandWrite(symbol));
+														}
+													}
+														
+
+										| T_num  { program.add(new CommandWrite(LT(0).getText())); }
+										| T_text { program.add(new CommandWrite(LT(0).getText())); }
+										)
 					;
 
 cmdRead		:		"gets" T_id {

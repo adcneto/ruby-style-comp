@@ -246,7 +246,42 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			match(LITERAL_puts);
-			term();
+			{
+			switch ( LA(1)) {
+			case T_id:
+			{
+				match(T_id);
+				
+																    symbol = table.getById(LT(0).getText());
+																		if (symbol == null){
+																	  	String errorMsg = "Variavel nao foi declarada";
+																		  System.err.println(errorMsg);
+																		  throw new RecognitionException(errorMsg);
+																		}
+																		else{
+																	  	program.add(new CommandWrite(symbol));
+																		}
+																	
+				break;
+			}
+			case T_num:
+			{
+				match(T_num);
+				program.add(new CommandWrite(LT(0).getText()));
+				break;
+			}
+			case T_text:
+			{
+				match(T_text);
+				program.add(new CommandWrite(LT(0).getText()));
+				break;
+			}
+			default:
+			{
+				throw new NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -286,14 +321,14 @@ public RubyStyleParser(ParserSharedInputState state) {
 			cond();
 			commands();
 			{
-			_loop22:
+			_loop24:
 			do {
 				if ((LA(1)==LITERAL_else)) {
 					match(LITERAL_else);
 					commands();
 				}
 				else {
-					break _loop22;
+					break _loop24;
 				}
 				
 			} while (true);
@@ -349,6 +384,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		
 		try {      // for error handling
+			{
 			switch ( LA(1)) {
 			case T_id:
 			{
@@ -370,6 +406,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
 			}
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -383,18 +420,18 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			term();
 			{
-			int _cnt26=0;
-			_loop26:
+			int _cnt28=0;
+			_loop28:
 			do {
 				if ((LA(1)==Op_rel)) {
 					match(Op_rel);
 					term();
 				}
 				else {
-					if ( _cnt26>=1 ) { break _loop26; } else {throw new NoViableAltException(LT(1), getFilename());}
+					if ( _cnt28>=1 ) { break _loop28; } else {throw new NoViableAltException(LT(1), getFilename());}
 				}
 				
-				_cnt26++;
+				_cnt28++;
 			} while (true);
 			}
 		}
