@@ -1,8 +1,11 @@
 begin
-	int a
-	gets a
+	int a, b
+	a := 1
+	b := 2
 	puts a
-	puts "Texto"
-	a := 2
-	puts a
+	puts b
+	if a < b
+	endif
+	if b < a
+	endif
 end

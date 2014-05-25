@@ -156,7 +156,7 @@ tryAgain:
 		matchRange('a','z');
 		}
 		{
-		_loop32:
+		_loop30:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -190,7 +190,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop32;
+				break _loop30;
 			}
 			}
 		} while (true);
@@ -208,17 +208,17 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt35=0;
-		_loop35:
+		int _cnt33=0;
+		_loop33:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt35>=1 ) { break _loop35; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt33>=1 ) { break _loop33; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt35++;
+			_cnt33++;
 		} while (true);
 		}
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
@@ -235,7 +235,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop38:
+		_loop36:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -274,7 +274,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop38;
+				break _loop36;
 			}
 			}
 		} while (true);

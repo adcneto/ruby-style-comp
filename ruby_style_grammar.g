@@ -3,7 +3,8 @@ class RubyStyleParser extends Parser;
   Symbol symbol;
 	SymbolTable table;
 	Program program;
-	
+	boolean condition = false;
+
 	public void init(){
 	  table = new SymbolTable();
 		program = new Program();
@@ -108,15 +109,39 @@ cmdRead		:		"gets" T_id {
 													}
 					;
 
-cmdIf 		:		"if" cond commands ("else" commands)* "endif"
+cmdIf 		:		"if" cond {System.out.println(condition);} commands ("else" commands)* "endif"
 					;
 
 cmdWhile	:		"while" commands "endwhile"
 					;
 
 
-cond 		:		term (Op_rel term)+
-			;
+cond 		  :		T_id{
+									condition = false;
+							    symbol = table.getById(LT(0).getText());
+							    ConditionVerifier cv;
+							    System.out.println(symbol.getValue());
+									if (symbol == null){
+								  	String errorMsg = "Variavel nao foi declarada";
+									  System.err.println(errorMsg);
+									  throw new RecognitionException(errorMsg);
+									} else {
+										 cv = new ConditionVerifier(symbol.getValue());
+									}
+								}  
+						Op_rel{
+							if (symbol != null){
+								cv.setOperator(LT(0).getText());
+							}
+						} 
+						T_id{
+							Symbol symbolRight = table.getById(LT(0).getText());
+							if (symbol != null && symbolRight != null){
+								cv.setRight(symbolRight.getValue());
+								condition = cv.verify();
+							}
+						}
+				;
  
 
 class RubyStyleLexer extends Lexer;

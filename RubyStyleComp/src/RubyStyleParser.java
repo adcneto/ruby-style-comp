@@ -20,7 +20,8 @@ public class RubyStyleParser extends antlr.LLkParser       implements RubyStyleP
   Symbol symbol;
 	SymbolTable table;
 	Program program;
-	
+	boolean condition = false;
+
 	public void init(){
 	  table = new SymbolTable();
 		program = new Program();
@@ -335,6 +336,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			match(LITERAL_if);
 			cond();
+			System.out.println(condition);
 			commands();
 			{
 			_loop24:
@@ -434,22 +436,34 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		
 		try {      // for error handling
-			term();
-			{
-			int _cnt28=0;
-			_loop28:
-			do {
-				if ((LA(1)==Op_rel)) {
-					match(Op_rel);
-					term();
-				}
-				else {
-					if ( _cnt28>=1 ) { break _loop28; } else {throw new NoViableAltException(LT(1), getFilename());}
-				}
-				
-				_cnt28++;
-			} while (true);
-			}
+			match(T_id);
+			
+												condition = false;
+										    symbol = table.getById(LT(0).getText());
+										    ConditionVerifier cv;
+										    System.out.println(symbol.getValue());
+												if (symbol == null){
+											  	String errorMsg = "Variavel nao foi declarada";
+												  System.err.println(errorMsg);
+												  throw new RecognitionException(errorMsg);
+												} else {
+													 cv = new ConditionVerifier(symbol.getValue());
+												}
+											
+			match(Op_rel);
+			
+										if (symbol != null){
+											cv.setOperator(LT(0).getText());
+										}
+									
+			match(T_id);
+			
+										Symbol symbolRight = table.getById(LT(0).getText());
+										if (symbol != null && symbolRight != null){
+											cv.setRight(symbolRight.getValue());
+											condition = cv.verify();
+										}
+									
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -516,7 +530,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 8360032L, 0L};
+		long[] data = { 4165728L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
