@@ -244,7 +244,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 														program.add(cmdAttr);
 													}
 												
-			match(11);
+			match(Op_attr);
 			expr();
 			
 											if (symbol != null){
@@ -537,7 +537,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"\"int\"",
 		"\"string\"",
 		"\"float\"",
-		"\"=\"",
+		"Op_attr",
 		"Op_arit",
 		"T_num",
 		"T_text",
@@ -549,7 +549,6 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"\"while\"",
 		"\"endwhile\"",
 		"Op_rel",
-		"Op_attr",
 		"T_ws"
 	};
 	

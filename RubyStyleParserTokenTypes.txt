@@ -7,7 +7,7 @@ T_comma=7
 LITERAL_int="int"=8
 LITERAL_string="string"=9
 LITERAL_float="float"=10
-"="=11
+Op_attr=11
 Op_arit=12
 T_num=13
 T_text=14
@@ -19,5 +19,4 @@ LITERAL_endif="endif"=19
 LITERAL_while="while"=20
 LITERAL_endwhile="endwhile"=21
 Op_rel=22
-Op_attr=23
-T_ws=24
+T_ws=23

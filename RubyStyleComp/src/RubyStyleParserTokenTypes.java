@@ -10,7 +10,7 @@ public interface RubyStyleParserTokenTypes {
 	int LITERAL_int = 8;
 	int LITERAL_string = 9;
 	int LITERAL_float = 10;
-	// "=" = 11
+	int Op_attr = 11;
 	int Op_arit = 12;
 	int T_num = 13;
 	int T_text = 14;
@@ -22,6 +22,5 @@ public interface RubyStyleParserTokenTypes {
 	int LITERAL_while = 20;
 	int LITERAL_endwhile = 21;
 	int Op_rel = 22;
-	int Op_attr = 23;
-	int T_ws = 24;
+	int T_ws = 23;
 }
