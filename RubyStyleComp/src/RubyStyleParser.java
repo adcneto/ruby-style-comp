@@ -457,30 +457,66 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		
 		try {      // for error handling
-			match(T_id);
-			
-										    symbol = table.getById(LT(0).getText());
-												if (symbol == null){
-											  	String errorMsg = "Variavel nao foi declarada";
-												  System.err.println(errorMsg);
-												  throw new RecognitionException(errorMsg);
-												} else {
-													 cv = new ConditionVerifier(symbol);
-												}
-											
+			{
+			switch ( LA(1)) {
+			case T_id:
+			{
+				match(T_id);
+				
+											    symbol = table.getById(LT(0).getText());
+													if (symbol == null){
+												  	String errorMsg = "Variavel nao foi declarada";
+													  System.err.println(errorMsg);
+													  throw new RecognitionException(errorMsg);
+													} else {
+														 cv = new ConditionVerifier("0", symbol);
+													}
+												
+				break;
+			}
+			case T_num:
+			{
+				match(T_num);
+				cv = new ConditionVerifier(LT(0).getText(), null);
+				break;
+			}
+			default:
+			{
+				throw new NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
 			match(Op_rel);
 			
 										if (symbol != null){
 											cv.setOperator(LT(0).getText());
 										}
 									
-			match(T_id);
-			
-										Symbol symbolRight = table.getById(LT(0).getText());
-										if (symbol != null && symbolRight != null){
-											cv.setRight(symbolRight);
-										}
-									
+			{
+			switch ( LA(1)) {
+			case T_id:
+			{
+				match(T_id);
+				
+											Symbol symbolRight = table.getById(LT(0).getText());
+											if (symbol != null && symbolRight != null){
+												cv.setRight("0", symbolRight);
+											}
+										
+				break;
+			}
+			case T_num:
+			{
+				match(T_num);
+				cv.setRight(LT(0).getText(), null);
+				break;
+			}
+			default:
+			{
+				throw new NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);

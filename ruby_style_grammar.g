@@ -138,27 +138,33 @@ cmdWhile	:		"while" cond {
 					;
 
 
-cond 		  :		T_id{
+cond 		  :		(T_id{
 							    symbol = table.getById(LT(0).getText());
 									if (symbol == null){
 								  	String errorMsg = "Variavel nao foi declarada";
 									  System.err.println(errorMsg);
 									  throw new RecognitionException(errorMsg);
 									} else {
-										 cv = new ConditionVerifier(symbol);
+										 cv = new ConditionVerifier("0", symbol);
 									}
-								}  
+								}
+								|
+								T_num {cv = new ConditionVerifier(LT(0).getText(), null);}
+								)  
 						Op_rel{
 							if (symbol != null){
 								cv.setOperator(LT(0).getText());
 							}
 						} 
-						T_id{
+						(T_id{
 							Symbol symbolRight = table.getById(LT(0).getText());
 							if (symbol != null && symbolRight != null){
-								cv.setRight(symbolRight);
+								cv.setRight("0", symbolRight);
 							}
 						}
+						|
+						T_num {cv.setRight(LT(0).getText(), null);}
+						)
 				;
  
 

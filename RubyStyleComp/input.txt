@@ -15,11 +15,10 @@ begin
 		puts "Entrei no else b menor que a"
 	endif
 
-	c := 4
-	d := 5
-	while c < d
+	c := 6
+	while 4 < c
 		puts c
-		c := 6
+		c := 3
 	endwhile
 	puts c
 end
