@@ -65,7 +65,7 @@ cmdAttr		:		T_id{
 										}
 									} 
 
-							Op_attr expr {
+							"=" expr {
 								if (symbol != null){
 									cmdAttr.setValue(LT(0).getText());
 								}
