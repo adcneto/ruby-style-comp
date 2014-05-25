@@ -50,6 +50,7 @@ public RubyStyleLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("gets", this), new Integer(16));
 	literals.put(new ANTLRHashString("while", this), new Integer(20));
 	literals.put(new ANTLRHashString("endwhile", this), new Integer(21));
+	literals.put(new ANTLRHashString("=", this), new Integer(11));
 	literals.put(new ANTLRHashString("float", this), new Integer(10));
 	literals.put(new ANTLRHashString("endif", this), new Integer(19));
 }
