@@ -2,10 +2,16 @@ begin
 	int a, b
 	a := 1
 	b := 2
-	puts a
-	puts b
+
 	if a < b
+		puts "Entrei no if a menor que b"
+	else
+		puts "Entrei no else a menor que b"
 	endif
+
 	if b < a
+		puts "Entrei no if b menor que a"
+	else
+		puts "Entrei no else b menor que a"
 	endif
 end

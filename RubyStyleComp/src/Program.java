@@ -11,14 +11,24 @@ import java.util.ArrayList;
  * @author icarovts
  */
 public class Program {
-    ArrayList<Command> commands;
+    private ArrayList<Command> commands;
+    private Command currentBlock;
+    private String currentScope;
     
     public Program(){
         commands = new ArrayList<Command>();
     }
     
     public void add(Command cmd){
-        commands.add(cmd);
+        if(currentBlock == null)
+            commands.add(cmd);
+        else if(currentScope.equals("if")){
+            CommandIf cmdIf = (CommandIf) currentBlock;
+            cmdIf.addToCommands(cmd);
+        } else if(currentScope.equals("else")){
+            CommandIf cmdIf = (CommandIf) currentBlock;
+            cmdIf.addToElseCommands(cmd);
+        }
     }
     
     public void run(){
@@ -26,5 +36,14 @@ public class Program {
             cmd.run();
         }
     }
+
+    public void setCurrentBlock(Command currentBlock) {
+        this.currentBlock = currentBlock;
+    }
+
+    public void setCurrentScope(String currentScope) {
+        this.currentScope = currentScope;
+    }
+    
     
 }

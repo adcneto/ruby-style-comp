@@ -20,7 +20,7 @@ public class RubyStyleParser extends antlr.LLkParser       implements RubyStyleP
   Symbol symbol;
 	SymbolTable table;
 	Program program;
-	boolean condition = false;
+	ConditionVerifier cv;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -336,13 +336,19 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			match(LITERAL_if);
 			cond();
-			System.out.println(condition);
+			
+																CommandIf cmd = new CommandIf(cv);
+																program.add(cmd);
+																program.setCurrentBlock(cmd);
+																program.setCurrentScope("if");
+															
 			commands();
 			{
 			_loop24:
 			do {
 				if ((LA(1)==LITERAL_else)) {
 					match(LITERAL_else);
+					program.setCurrentScope("else");
 					commands();
 				}
 				else {
@@ -352,6 +358,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 			} while (true);
 			}
 			match(LITERAL_endif);
+			
+															program.setCurrentBlock(null); 
+															program.setCurrentScope("");
+														
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -438,16 +448,13 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			match(T_id);
 			
-												condition = false;
 										    symbol = table.getById(LT(0).getText());
-										    ConditionVerifier cv;
-										    System.out.println(symbol.getValue());
 												if (symbol == null){
 											  	String errorMsg = "Variavel nao foi declarada";
 												  System.err.println(errorMsg);
 												  throw new RecognitionException(errorMsg);
 												} else {
-													 cv = new ConditionVerifier(symbol.getValue());
+													 cv = new ConditionVerifier(symbol);
 												}
 											
 			match(Op_rel);
@@ -460,8 +467,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			
 										Symbol symbolRight = table.getById(LT(0).getText());
 										if (symbol != null && symbolRight != null){
-											cv.setRight(symbolRight.getValue());
-											condition = cv.verify();
+											cv.setRight(symbolRight);
 										}
 									
 		}

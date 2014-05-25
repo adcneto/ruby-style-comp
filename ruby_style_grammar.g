@@ -3,7 +3,7 @@ class RubyStyleParser extends Parser;
   Symbol symbol;
 	SymbolTable table;
 	Program program;
-	boolean condition = false;
+	ConditionVerifier cv;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -109,7 +109,19 @@ cmdRead		:		"gets" T_id {
 													}
 					;
 
-cmdIf 		:		"if" cond {System.out.println(condition);} commands ("else" commands)* "endif"
+cmdIf 		:		"if" cond {
+													CommandIf cmd = new CommandIf(cv);
+													program.add(cmd);
+													program.setCurrentBlock(cmd);
+													program.setCurrentScope("if");
+												} 
+							commands 
+							("else" { program.setCurrentScope("else"); }
+							commands)* 
+							"endif" { 
+												program.setCurrentBlock(null); 
+												program.setCurrentScope("");
+											}
 					;
 
 cmdWhile	:		"while" commands "endwhile"
@@ -117,16 +129,13 @@ cmdWhile	:		"while" commands "endwhile"
 
 
 cond 		  :		T_id{
-									condition = false;
 							    symbol = table.getById(LT(0).getText());
-							    ConditionVerifier cv;
-							    System.out.println(symbol.getValue());
 									if (symbol == null){
 								  	String errorMsg = "Variavel nao foi declarada";
 									  System.err.println(errorMsg);
 									  throw new RecognitionException(errorMsg);
 									} else {
-										 cv = new ConditionVerifier(symbol.getValue());
+										 cv = new ConditionVerifier(symbol);
 									}
 								}  
 						Op_rel{
@@ -137,8 +146,7 @@ cond 		  :		T_id{
 						T_id{
 							Symbol symbolRight = table.getById(LT(0).getText());
 							if (symbol != null && symbolRight != null){
-								cv.setRight(symbolRight.getValue());
-								condition = cv.verify();
+								cv.setRight(symbolRight);
 							}
 						}
 				;

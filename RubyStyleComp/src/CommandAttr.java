@@ -24,6 +24,7 @@ public class CommandAttr extends Command{
     
     public void run(){
         sym.setValue(Integer.parseInt(value));
+        sym.setInitialized(true);
     }
     
 }

@@ -11,9 +11,35 @@ import java.util.ArrayList;
  * @author icarovts
  */
 public class CommandIf extends Command{
-    ArrayList<Command> commands;
-    ArrayList<Command> elseCommands;
+    private ArrayList<Command> commands;
+    private ArrayList<Command> elseCommands;
+    private ConditionVerifier verifier;
+
+    public CommandIf(ConditionVerifier verifier) {
+        this.verifier = verifier;
+        commands = new ArrayList<Command>();
+        elseCommands = new ArrayList<Command>();
+    }
     
-    public void run(){}
+    public void run(){
+        if(verifier.verify()){
+            for(Command cmd : commands){
+                cmd.run();
+            }
+        } else {
+            for(Command cmd : elseCommands){
+                cmd.run();
+            }
+        }
+            
+    }
+    
+    public void addToCommands(Command cmd){
+        commands.add(cmd);
+    }
+    
+    public void addToElseCommands(Command cmd){
+        elseCommands.add(cmd);
+    }
     
 }

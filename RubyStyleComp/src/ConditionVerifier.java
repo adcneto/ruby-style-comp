@@ -8,15 +8,15 @@
  * @author icarovts
  */
 public class ConditionVerifier {
-    private int left;
-    private int right;
+    private Symbol left;
+    private Symbol right;
     private String operator;
     
-    public ConditionVerifier(int left){
+    public ConditionVerifier(Symbol left){
         this.left = left;
     }
     
-    public void setRight(int right){
+    public void setRight(Symbol right){
         this.right = right;
     }
     
@@ -26,17 +26,17 @@ public class ConditionVerifier {
     
     public boolean verify(){
         if(operator.equals(">"))
-            return left > right;
+            return left.getValue() > right.getValue();
         if(operator.equals("<"))
-            return left < right;
+            return left.getValue() < right.getValue();
         if(operator.equals(">="))
-            return left >= right;
+            return left.getValue() >= right.getValue();
         if(operator.equals("<="))
-            return left <= right;
+            return left.getValue() <= right.getValue();
         if(operator.equals("!="))
-            return left != right;
+            return left.getValue() != right.getValue();
         if(operator.equals("=="))
-            return left == right;
+            return left.getValue() == right.getValue();
         
         return false;
     }
