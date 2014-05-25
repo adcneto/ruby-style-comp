@@ -16,7 +16,9 @@ public class Main {
         try{
             RubyStyleLexer lexer = new RubyStyleLexer(new BufferedReader(new FileReader("input.txt")));
             RubyStyleParser parser = new RubyStyleParser(lexer);
+            parser.init();
             parser.program();
+            parser.execute();
         } catch(Exception e){
             System.err.print(e.getMessage());
         }

@@ -1,9 +1,46 @@
 class RubyStyleParser extends Parser;
+{
+  Symbol symbol;
+	SymbolTable table;
+	Program program;
+	
+	public void init(){
+	  table = new SymbolTable();
+		program = new Program();
+	}
+	
+	public void execute(){
+	   program.run();
+	}
+}
 
 program		:		"begin" {System.out.println("Entrou no begin");} (declare)* commands "end"
 					;
 
-declare		:		(type T_id (T_comma T_id)*)
+declare		:		(type T_id {
+												    String id = LT(0).getText();
+														if (table.getById(id) != null){
+															String errorMsg = "Variavel " + id + " ja foi declarada";
+													  	System.err.println(errorMsg);
+													    throw new RecognitionException(errorMsg);
+														}
+														else{
+													  	table.add(new Symbol(id, 0, false));
+														}
+											 	 }
+
+							(T_comma T_id {
+													    id = LT(0).getText();
+															if (table.getById(id) != null){
+																String errorMsg = "Variavel " + id + " ja foi declarada";
+														  	System.err.println(errorMsg);
+														    throw new RecognitionException(errorMsg);
+															}
+															else{
+														  	table.add(new Symbol(id, 0, false));
+															}
+												 	 }
+							)*)
 					;
 
 type 			:		"int" | "string" | "float"
@@ -27,7 +64,17 @@ term 			:		T_id | T_num | T_text
 cmdWrite	:		"puts" term
 					;
 
-cmdRead		:		"gets" T_id
+cmdRead		:		"gets" T_id {
+													  symbol = table.getById(LT(0).getText());
+													  if (symbol == null){
+													  	String errorMsg = "Variavel nao foi declarada";
+														  System.err.println(errorMsg);
+														  throw new RecognitionException(errorMsg);
+														}
+														else{
+														  program.add(new CommandRead(symbol));
+														}
+													}
 					;
 
 cmdIf 		:		"if" cond commands ("else" commands)* "endif"

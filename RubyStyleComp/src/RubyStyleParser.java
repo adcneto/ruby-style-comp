@@ -17,6 +17,19 @@ import antlr.collections.impl.BitSet;
 public class RubyStyleParser extends antlr.LLkParser       implements RubyStyleParserTokenTypes
  {
 
+  Symbol symbol;
+	SymbolTable table;
+	Program program;
+	
+	public void init(){
+	  table = new SymbolTable();
+		program = new Program();
+	}
+	
+	public void execute(){
+	   program.run();
+	}
+
 protected RubyStyleParser(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
   tokenNames = _tokenNames;
@@ -74,12 +87,34 @@ public RubyStyleParser(ParserSharedInputState state) {
 			{
 			type();
 			match(T_id);
+			
+															    String id = LT(0).getText();
+																	if (table.getById(id) != null){
+																		String errorMsg = "Variavel " + id + " ja foi declarada";
+																  	System.err.println(errorMsg);
+																    throw new RecognitionException(errorMsg);
+																	}
+																	else{
+																  	table.add(new Symbol(id, 0, false));
+																	}
+														 	
 			{
 			_loop7:
 			do {
 				if ((LA(1)==T_comma)) {
 					match(T_comma);
 					match(T_id);
+					
+																		    id = LT(0).getText();
+																				if (table.getById(id) != null){
+																					String errorMsg = "Variavel " + id + " ja foi declarada";
+																			  	System.err.println(errorMsg);
+																			    throw new RecognitionException(errorMsg);
+																				}
+																				else{
+																			  	table.add(new Symbol(id, 0, false));
+																				}
+																	 	
 				}
 				else {
 					break _loop7;
@@ -225,6 +260,17 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			match(LITERAL_gets);
 			match(T_id);
+			
+																  symbol = table.getById(LT(0).getText());
+																  if (symbol == null){
+																  	String errorMsg = "Variavel nao foi declarada";
+																	  System.err.println(errorMsg);
+																	  throw new RecognitionException(errorMsg);
+																	}
+																	else{
+																	  program.add(new CommandRead(symbol));
+																	}
+																
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
