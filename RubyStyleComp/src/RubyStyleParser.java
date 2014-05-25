@@ -232,8 +232,24 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			match(T_id);
+			
+											    symbol = table.getById(LT(0).getText());
+											    CommandAttr cmdAttr = new CommandAttr(symbol);
+													if (symbol == null){
+												  	String errorMsg = "Variavel nao foi declarada";
+													  System.err.println(errorMsg);
+													  throw new RecognitionException(errorMsg);
+													} else {
+														program.add(cmdAttr);
+													}
+												
 			match(Op_attr);
 			expr();
+			
+											if (symbol != null){
+												cmdAttr.setValue(LT(0).getText());
+											}
+										
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);

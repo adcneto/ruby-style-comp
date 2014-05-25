@@ -3,4 +3,6 @@ begin
 	gets a
 	puts a
 	puts "Texto"
+	a := 2
+	puts a
 end

@@ -20,7 +20,6 @@ public class SymbolTable {
     
     public void add(Symbol sym){
         table.add(sym);
-        System.out.println(sym.getId());
     }
     
     public Symbol getById(String id){

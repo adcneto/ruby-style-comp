@@ -52,7 +52,23 @@ commands	:		(command)*
 command		:		cmdAttr | cmdWrite | cmdRead | cmdIf | cmdWhile 
 					;
 
-cmdAttr		:		T_id Op_attr expr
+cmdAttr		:		T_id{
+								    symbol = table.getById(LT(0).getText());
+								    CommandAttr cmdAttr = new CommandAttr(symbol);
+										if (symbol == null){
+									  	String errorMsg = "Variavel nao foi declarada";
+										  System.err.println(errorMsg);
+										  throw new RecognitionException(errorMsg);
+										} else {
+											program.add(cmdAttr);
+										}
+									} 
+
+							Op_attr expr {
+								if (symbol != null){
+									cmdAttr.setValue(LT(0).getText());
+								}
+							}
 					;
 
 expr			:		term (Op_arit term)*
