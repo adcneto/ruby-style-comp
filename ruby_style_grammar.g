@@ -4,6 +4,7 @@ class RubyStyleParser extends Parser;
 	SymbolTable table;
 	Program program;
 	ConditionVerifier cv;
+	ExpressionCalculator ec;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -67,13 +68,48 @@ cmdAttr		:		T_id{
 
 							Op_attr expr {
 								if (symbol != null){
-									cmdAttr.setValue(LT(0).getText());
+									cmdAttr.setExpressionCalculator(ec);
 								}
 							}
 					;
 
-expr			:		term (Op_arit term)*
+expr			:		(T_num {
+											ec = new ExpressionCalculator();
+											int num = Integer.parseInt(LT(0).getText());
+											ec.values.add(num);
+										}
+							|
+							T_id{
+								symbol = table.getById(LT(0).getText());
+								if (symbol == null){
+							  	String errorMsg = "Variavel nao foi declarada";
+								  System.err.println(errorMsg);
+								  throw new RecognitionException(errorMsg);
+								} else {
+									ec = new ExpressionCalculator();
+									ec.values.add(symbol);
+								}
+							})
+							(Op_arit { ec.operators.add(LT(0).getText()); }
+								(T_num{ 
+									int num = Integer.parseInt(LT(0).getText());
+									ec.values.add(num);
+							  }
+							  |
+							  T_id{
+							 		symbol = table.getById(LT(0).getText());
+									if (symbol == null){
+								  	String errorMsg = "Variavel nao foi declarada";
+									  System.err.println(errorMsg);
+									  throw new RecognitionException(errorMsg);
+									} else {
+										ec.values.add(symbol);
+									} 	
+							  })
+								)* {ec.operators.add(null);}
+							
 					;
+
 
 term 			:		(T_id | T_num | T_text)
 					;

@@ -32,7 +32,7 @@ public class ConditionVerifier {
         if(symbolLeft != null)
             left = symbolLeft.getValue();
         if(symbolRight != null)
-            right = symbolRight.getValue();
+            right = symbolRight.getValue(); 
         
         if(operator.equals(">"))
             return left > right;

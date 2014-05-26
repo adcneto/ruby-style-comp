@@ -11,8 +11,8 @@ public interface RubyStyleParserTokenTypes {
 	int LITERAL_string = 9;
 	int LITERAL_float = 10;
 	int Op_attr = 11;
-	int Op_arit = 12;
-	int T_num = 13;
+	int T_num = 12;
+	int Op_arit = 13;
 	int T_text = 14;
 	int LITERAL_puts = 15;
 	int LITERAL_gets = 16;

@@ -13,7 +13,7 @@ import java.io.FileReader;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        try{
+        try{            
             RubyStyleLexer lexer = new RubyStyleLexer(new BufferedReader(new FileReader("input.txt")));
             RubyStyleParser parser = new RubyStyleParser(lexer);
             parser.init();

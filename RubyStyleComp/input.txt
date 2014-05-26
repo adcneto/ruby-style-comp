@@ -1,24 +1,12 @@
 begin
-	int a, b, c, d
-	a := 1
-	b := 2
+	int a, b, c, d, e
+	gets a
+	gets b
+	gets c
+	gets d
 
-	if a < b
-		puts "Entrei no if a menor que b"
-	else
-		puts "Entrei no else a menor que b"
-	endif
+	e := a+b*c+d
 
-	if b < a
-		puts "Entrei no if b menor que a"
-	else
-		puts "Entrei no else b menor que a"
-	endif
+	puts e
 
-	c := 6
-	while 4 < c
-		puts c
-		c := 3
-	endwhile
-	puts c
 end

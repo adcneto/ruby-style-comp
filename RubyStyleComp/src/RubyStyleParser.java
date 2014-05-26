@@ -21,6 +21,7 @@ public class RubyStyleParser extends antlr.LLkParser       implements RubyStyleP
 	SymbolTable table;
 	Program program;
 	ConditionVerifier cv;
+	ExpressionCalculator ec;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -248,7 +249,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			expr();
 			
 											if (symbol != null){
-												cmdAttr.setValue(LT(0).getText());
+												cmdAttr.setExpressionCalculator(ec);
 											}
 										
 		}
@@ -344,7 +345,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 															
 			commands();
 			{
-			_loop24:
+			_loop26:
 			do {
 				if ((LA(1)==LITERAL_else)) {
 					match(LITERAL_else);
@@ -352,7 +353,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 					commands();
 				}
 				else {
-					break _loop24;
+					break _loop26;
 				}
 				
 			} while (true);
@@ -398,20 +399,86 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		
 		try {      // for error handling
-			term();
 			{
-			_loop16:
+			switch ( LA(1)) {
+			case T_num:
+			{
+				match(T_num);
+				
+															ec = new ExpressionCalculator();
+															int num = Integer.parseInt(LT(0).getText());
+															ec.values.add(num);
+														
+				break;
+			}
+			case T_id:
+			{
+				match(T_id);
+				
+												symbol = table.getById(LT(0).getText());
+												if (symbol == null){
+											  	String errorMsg = "Variavel nao foi declarada";
+												  System.err.println(errorMsg);
+												  throw new RecognitionException(errorMsg);
+												} else {
+													ec = new ExpressionCalculator();
+													ec.values.add(symbol);
+												}
+											
+				break;
+			}
+			default:
+			{
+				throw new NoViableAltException(LT(1), getFilename());
+			}
+			}
+			}
+			{
+			_loop18:
 			do {
 				if ((LA(1)==Op_arit)) {
 					match(Op_arit);
-					term();
+					ec.operators.add(LT(0).getText());
+					{
+					switch ( LA(1)) {
+					case T_num:
+					{
+						match(T_num);
+						
+															int num = Integer.parseInt(LT(0).getText());
+															ec.values.add(num);
+													
+						break;
+					}
+					case T_id:
+					{
+						match(T_id);
+						
+													 		symbol = table.getById(LT(0).getText());
+															if (symbol == null){
+														  	String errorMsg = "Variavel nao foi declarada";
+															  System.err.println(errorMsg);
+															  throw new RecognitionException(errorMsg);
+															} else {
+																ec.values.add(symbol);
+															} 	
+													
+						break;
+					}
+					default:
+					{
+						throw new NoViableAltException(LT(1), getFilename());
+					}
+					}
+					}
 				}
 				else {
-					break _loop16;
+					break _loop18;
 				}
 				
 			} while (true);
 			}
+			ec.operators.add(null);
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -449,7 +516,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_6);
+			recover(ex,_tokenSet_0);
 		}
 	}
 	
@@ -520,7 +587,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_7);
+			recover(ex,_tokenSet_6);
 		}
 	}
 	
@@ -538,8 +605,8 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"\"string\"",
 		"\"float\"",
 		"Op_attr",
-		"Op_arit",
 		"T_num",
+		"Op_arit",
 		"T_text",
 		"\"puts\"",
 		"\"gets\"",
@@ -583,14 +650,9 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 4165728L, 0L};
-		return data;
-	}
-	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
-	private static final long[] mk_tokenSet_7() {
 		long[] data = { 4161600L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	
 	}

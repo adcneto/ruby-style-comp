@@ -8,8 +8,8 @@ LITERAL_int="int"=8
 LITERAL_string="string"=9
 LITERAL_float="float"=10
 Op_attr=11
-Op_arit=12
-T_num=13
+T_num=12
+Op_arit=13
 T_text=14
 LITERAL_puts="puts"=15
 LITERAL_gets="gets"=16

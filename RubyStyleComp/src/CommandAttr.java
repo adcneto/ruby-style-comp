@@ -11,19 +11,19 @@ import javax.swing.JOptionPane;
  * @author icarovts
  */
 public class CommandAttr extends Command{
-    private String value;
     private Symbol sym;
+    private ExpressionCalculator ec;
     
     public CommandAttr(Symbol sym){
         this.sym = sym;
     }
-    
-    public void setValue(String value){
-        this.value = value;
+
+    public void setExpressionCalculator(ExpressionCalculator ec) {
+        this.ec = ec;
     }
     
     public void run(){
-        sym.setValue(Integer.parseInt(value));
+        sym.setValue(ec.calculate());
         sym.setInitialized(true);
     }
     
