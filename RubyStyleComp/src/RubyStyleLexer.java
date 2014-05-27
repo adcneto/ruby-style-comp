@@ -44,8 +44,8 @@ public RubyStyleLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("if", this), new Integer(16));
 	literals.put(new ANTLRHashString("end", this), new Integer(5));
 	literals.put(new ANTLRHashString("begin", this), new Integer(4));
-	literals.put(new ANTLRHashString("int", this), new Integer(8));
 	literals.put(new ANTLRHashString("puts", this), new Integer(14));
+	literals.put(new ANTLRHashString("num", this), new Integer(8));
 	literals.put(new ANTLRHashString("string", this), new Integer(9));
 	literals.put(new ANTLRHashString("gets", this), new Integer(15));
 	literals.put(new ANTLRHashString("while", this), new Integer(19));
@@ -220,6 +220,21 @@ tryAgain:
 			_cnt36++;
 		} while (true);
 		}
+		{
+		_loop39:
+		do {
+			if ((LA(1)=='.')) {
+				match('.');
+				{
+				matchRange('0','9');
+				}
+			}
+			else {
+				break _loop39;
+			}
+			
+		} while (true);
+		}
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
@@ -234,7 +249,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop39:
+		_loop42:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -273,7 +288,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop39;
+				break _loop42;
 			}
 			}
 		} while (true);

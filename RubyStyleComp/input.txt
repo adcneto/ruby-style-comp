@@ -1,5 +1,5 @@
 begin
-	int a, b, c
+	num a, b, c, g
 	string d, e, f
 	gets a
 	gets b
@@ -20,5 +20,8 @@ begin
 
 	c := a * 10 + b * 2 - 30
 	puts c
+
+	g := 3.2 * 2 + 4 - 10
+	puts g 
 	
 end

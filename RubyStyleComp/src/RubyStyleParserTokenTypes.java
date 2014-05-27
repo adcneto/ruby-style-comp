@@ -7,7 +7,7 @@ public interface RubyStyleParserTokenTypes {
 	int LITERAL_end = 5;
 	int T_id = 6;
 	int T_comma = 7;
-	int LITERAL_int = 8;
+	int LITERAL_num = 8;
 	int LITERAL_string = 9;
 	int Op_attr = 10;
 	int T_num = 11;

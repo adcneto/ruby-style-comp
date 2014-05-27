@@ -19,27 +19,27 @@ public class ExpressionCalculator {
         operators = new ArrayList<String>();
     }
     
-    public int calculate(){
+    public float calculate(){
         return calculateStep(0, 0, false);
     }
     // 0, 1, 2, 3
     // 1, 2, 3, 4
     // +, *, +, null
-    private int calculateStep(int step, int cachedValue, boolean cached){
-        int val;
+    private float calculateStep(int step, float cachedValue, boolean cached){
+        float val;
         if(cached)
             val = cachedValue;
         else{
             Object obj = values.get(step);
             if (obj instanceof Symbol){
                 Symbol sym = (Symbol)obj;
-                val = sym.getIntValue();
+                val = sym.getNumValue();
             } else {
-               val = (Integer) obj;
+               val = (Float) obj;
             }
         }
         
-        int nextVal;
+        float nextVal;
               
         String op = operators.get(step);
                
@@ -49,9 +49,9 @@ public class ExpressionCalculator {
             Object nextObj = values.get(step + 1);
             if (nextObj instanceof Symbol){
                 Symbol sym = (Symbol)nextObj;
-                nextVal = sym.getIntValue();
+                nextVal = sym.getNumValue();
             } else {
-               nextVal = (Integer) nextObj;
+               nextVal = (Float) nextObj;
             }
             
             if(op.equals("*")){

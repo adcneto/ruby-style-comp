@@ -64,7 +64,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			{
 			_loop3:
 			do {
-				if ((LA(1)==LITERAL_int||LA(1)==LITERAL_string)) {
+				if ((LA(1)==LITERAL_num||LA(1)==LITERAL_string)) {
 					declare();
 				}
 				else {
@@ -161,10 +161,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
-			case LITERAL_int:
+			case LITERAL_num:
 			{
-				match(LITERAL_int);
-				type = Symbol.INT;
+				match(LITERAL_num);
+				type = Symbol.NUM;
 				break;
 			}
 			case LITERAL_string:
@@ -247,7 +247,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			match(Op_attr);
 			expr();
 			
-											if (symbol != null && symbol.isInt()){
+											if (symbol != null && symbol.isNum()){
 												cmdAttr.setExpressionCalculator(ec);
 											}
 										
@@ -404,12 +404,12 @@ public RubyStyleParser(ParserSharedInputState state) {
 			{
 				match(T_num);
 				
-															if(symbol.isInt()){
+															if(symbol.isNum()){
 																ec = new ExpressionCalculator();
-																int num = Integer.parseInt(LT(0).getText());
+																float num = Float.parseFloat(LT(0).getText());
 																ec.values.add(num);
 															} else {
-																String errorMsg = "Variavel nao e um inteiro";
+																String errorMsg = "Variavel nao e um numero";
 												  			throw new RecognitionException(errorMsg);			
 															}
 														
@@ -464,7 +464,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 					{
 						match(T_num);
 						
-															int num = Integer.parseInt(LT(0).getText());
+															float num = Float.parseFloat(LT(0).getText());
 															ec.values.add(num);
 													
 						break;
@@ -477,10 +477,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 															if (symbol == null){
 														  	String errorMsg = "Variavel nao foi declarada";
 															  throw new RecognitionException(errorMsg);
-															} else if(rightSymbol.isInt()) {
+															} else if(rightSymbol.isNum()) {
 																ec.values.add(rightSymbol);
 															} else {
-																String errorMsg = "Variavel nao e um inteiro";
+																String errorMsg = "Variavel nao e um numero";
 														  	throw new RecognitionException(errorMsg);
 															} 	
 													
@@ -591,7 +591,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"\"end\"",
 		"T_id",
 		"T_comma",
-		"\"int\"",
+		"\"num\"",
 		"\"string\"",
 		"Op_attr",
 		"T_num",

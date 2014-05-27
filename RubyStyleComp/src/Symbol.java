@@ -9,17 +9,16 @@
  */
 public class Symbol {
     public final static String STRING = "string";
-    public final static String INT = "int";
+    public final static String NUM = "num";
     private String  id;
-    private int     intValue;
-    private float   floatValue;
+    private float     numValue;
     private String  stringValue;
     private boolean initialized;
     private String  type;
 
-    public Symbol(String id, int value, boolean initialized, String type) {
+    public Symbol(String id, float value, boolean initialized, String type) {
         this.id = id;
-        this.intValue = value;
+        this.numValue = value;
         this.initialized = initialized;
         this.type = type;
     }
@@ -36,16 +35,16 @@ public class Symbol {
         this.id = id;
     }
 
-    public int getIntValue() {
-        return intValue;
+    public float getNumValue() {
+        return numValue;
     }
     
     public String getStringValue() {
         return stringValue;
     }
 
-    public void setIntValue(int intValue) {
-        this.intValue = intValue;
+    public void setNumValue(float numValue) {
+        this.numValue = numValue;
     }
     
     public void setStringValue(String stringValue) {
@@ -64,8 +63,8 @@ public class Symbol {
         return type.equals(STRING);
     }
     
-    public boolean isInt(){
-        return type.equals(INT);
+    public boolean isNum(){
+        return type.equals(NUM);
     }
      
 }

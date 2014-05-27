@@ -46,7 +46,7 @@ declare		:		(type T_id {
 							)*)
 					;
 
-type 			:		("int"     { type = Symbol.INT; }
+type 			:		("num"     { type = Symbol.NUM; }
 						 	| "string" { type = Symbol.STRING; })
 					;
 
@@ -69,7 +69,7 @@ cmdAttr		:		T_id{
 									} 
 
 							Op_attr expr {
-								if (symbol != null && symbol.isInt()){
+								if (symbol != null && symbol.isNum()){
 									cmdAttr.setExpressionCalculator(ec);
 								}
 							}
@@ -77,12 +77,12 @@ cmdAttr		:		T_id{
 
 // expr : (T_num | T_id | T_text) (Op_arit (T_num | T_id))*
 expr			:		(T_num {
-											if(symbol.isInt()){
+											if(symbol.isNum()){
 												ec = new ExpressionCalculator();
-												int num = Integer.parseInt(LT(0).getText());
+												float num = Float.parseFloat(LT(0).getText());
 												ec.values.add(num);
 											} else {
-												String errorMsg = "Variavel nao e um inteiro";
+												String errorMsg = "Variavel nao e um numero";
 								  			throw new RecognitionException(errorMsg);			
 											}
 										}
@@ -111,7 +111,7 @@ expr			:		(T_num {
 							})
 							(Op_arit { ec.operators.add(LT(0).getText()); }
 								(T_num{ 
-									int num = Integer.parseInt(LT(0).getText());
+									float num = Float.parseFloat(LT(0).getText());
 									ec.values.add(num);
 							  }
 							  |
@@ -120,10 +120,10 @@ expr			:		(T_num {
 									if (symbol == null){
 								  	String errorMsg = "Variavel nao foi declarada";
 									  throw new RecognitionException(errorMsg);
-									} else if(rightSymbol.isInt()) {
+									} else if(rightSymbol.isNum()) {
 										ec.values.add(rightSymbol);
 									} else {
-										String errorMsg = "Variavel nao e um inteiro";
+										String errorMsg = "Variavel nao e um numero";
 								  	throw new RecognitionException(errorMsg);
 									} 	
 							  })
@@ -236,7 +236,7 @@ options
 T_id		:		('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')*
 			;
 
-T_num		:		('0'..'9')+
+T_num		:		('0'..'9')+ ('.'('0'..'9'))*
 			;
 
 T_text		:		'"' ('a'..'z'|'A'..'Z'|'0'..'9'|' ')* '"'

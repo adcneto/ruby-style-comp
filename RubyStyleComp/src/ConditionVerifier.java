@@ -8,19 +8,19 @@
  * @author icarovts
  */
 public class ConditionVerifier {
-    private int left;
-    private int right;
+    private float left;
+    private float right;
     private Symbol symbolLeft;
     private Symbol symbolRight;
     private String operator;
     
     public ConditionVerifier(String left, Symbol symbolLeft){
-        this.left = Integer.parseInt(left);
+        this.left = Float.parseFloat(left);
         this.symbolLeft = symbolLeft;
     }
     
     public void setRight(String right, Symbol symbolRight){
-        this.right = Integer.parseInt(right);
+        this.right = Float.parseFloat(right);
         this.symbolRight = symbolRight;
     }
     
@@ -30,9 +30,9 @@ public class ConditionVerifier {
     
     public boolean verify(){
         if(symbolLeft != null)
-            left = symbolLeft.getIntValue();
+            left = symbolLeft.getNumValue();
         if(symbolRight != null)
-            right = symbolRight.getIntValue(); 
+            right = symbolRight.getNumValue(); 
         
         if(operator.equals(">"))
             return left > right;

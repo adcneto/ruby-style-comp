@@ -20,8 +20,8 @@ public class CommandWrite extends Command{
         if (var instanceof Symbol){
             Symbol sym = (Symbol)var;
             String message = sym.getId() + " = ";
-            if(sym.isInt())
-                message += sym.getIntValue();
+            if(sym.isNum())
+                message += sym.getNumValue();
             else if(sym.isString())
                 message += sym.getStringValue();
             

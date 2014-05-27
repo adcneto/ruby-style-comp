@@ -4,7 +4,7 @@ LITERAL_begin="begin"=4
 LITERAL_end="end"=5
 T_id=6
 T_comma=7
-LITERAL_int="int"=8
+LITERAL_num="num"=8
 LITERAL_string="string"=9
 Op_attr=10
 T_num=11
