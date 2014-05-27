@@ -19,7 +19,10 @@ public class CommandRead extends Command{
     public void run(){
         String text;
         text = JOptionPane.showInputDialog("Digite o valor de " + sym.getId());
-        sym.setValue(Integer.parseInt(text));      
+        if(sym.isInt())
+            sym.setIntValue(Integer.parseInt(text));
+        else if(sym.isString())
+            sym.setStringValue(text);
     }
     
 }

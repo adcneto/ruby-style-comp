@@ -1,12 +1,24 @@
 begin
-	int a, b, c, d, e
+	int a, b, c
+	string d, e, f
 	gets a
 	gets b
-	gets c
 	gets d
+	gets e
 
-	e := a+b*c+d
+	if a > b
+		while b < 10
+			puts d
+			b := b + 1
+		endwhile
+	else
+		while b < 10
+			puts e
+			b := b + 1
+		endwhile
+	endif
 
-	puts e
-
+	c := a * 10 + b * 2 - 30
+	puts c
+	
 end

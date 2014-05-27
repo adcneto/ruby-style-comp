@@ -33,7 +33,7 @@ public class ExpressionCalculator {
             Object obj = values.get(step);
             if (obj instanceof Symbol){
                 Symbol sym = (Symbol)obj;
-                val = sym.getValue();
+                val = sym.getIntValue();
             } else {
                val = (Integer) obj;
             }
@@ -49,7 +49,7 @@ public class ExpressionCalculator {
             Object nextObj = values.get(step + 1);
             if (nextObj instanceof Symbol){
                 Symbol sym = (Symbol)nextObj;
-                nextVal = sym.getValue();
+                nextVal = sym.getIntValue();
             } else {
                nextVal = (Integer) nextObj;
             }

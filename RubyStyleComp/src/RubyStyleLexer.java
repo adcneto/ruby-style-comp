@@ -40,18 +40,17 @@ public RubyStyleLexer(LexerSharedInputState state) {
 	caseSensitiveLiterals = true;
 	setCaseSensitive(true);
 	literals = new Hashtable();
-	literals.put(new ANTLRHashString("else", this), new Integer(18));
-	literals.put(new ANTLRHashString("if", this), new Integer(17));
+	literals.put(new ANTLRHashString("else", this), new Integer(17));
+	literals.put(new ANTLRHashString("if", this), new Integer(16));
 	literals.put(new ANTLRHashString("end", this), new Integer(5));
 	literals.put(new ANTLRHashString("begin", this), new Integer(4));
 	literals.put(new ANTLRHashString("int", this), new Integer(8));
-	literals.put(new ANTLRHashString("puts", this), new Integer(15));
+	literals.put(new ANTLRHashString("puts", this), new Integer(14));
 	literals.put(new ANTLRHashString("string", this), new Integer(9));
-	literals.put(new ANTLRHashString("gets", this), new Integer(16));
-	literals.put(new ANTLRHashString("while", this), new Integer(20));
-	literals.put(new ANTLRHashString("endwhile", this), new Integer(21));
-	literals.put(new ANTLRHashString("float", this), new Integer(10));
-	literals.put(new ANTLRHashString("endif", this), new Integer(19));
+	literals.put(new ANTLRHashString("gets", this), new Integer(15));
+	literals.put(new ANTLRHashString("while", this), new Integer(19));
+	literals.put(new ANTLRHashString("endwhile", this), new Integer(20));
+	literals.put(new ANTLRHashString("endif", this), new Integer(18));
 }
 
 public Token nextToken() throws TokenStreamException {
@@ -156,7 +155,7 @@ tryAgain:
 		matchRange('a','z');
 		}
 		{
-		_loop34:
+		_loop33:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -190,7 +189,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop34;
+				break _loop33;
 			}
 			}
 		} while (true);
@@ -208,17 +207,17 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt37=0;
-		_loop37:
+		int _cnt36=0;
+		_loop36:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt37>=1 ) { break _loop37; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt36>=1 ) { break _loop36; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt37++;
+			_cnt36++;
 		} while (true);
 		}
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
@@ -235,7 +234,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop40:
+		_loop39:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -274,7 +273,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop40;
+				break _loop39;
 			}
 			}
 		} while (true);

@@ -8,15 +8,24 @@
  * @author icarovts
  */
 public class Symbol {
-    
+    public final static String STRING = "string";
+    public final static String INT = "int";
     private String  id;
-    private int     value;
+    private int     intValue;
+    private float   floatValue;
+    private String  stringValue;
     private boolean initialized;
+    private String  type;
 
-    public Symbol(String id, int value, boolean initialized) {
+    public Symbol(String id, int value, boolean initialized, String type) {
         this.id = id;
-        this.value = value;
+        this.intValue = value;
         this.initialized = initialized;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getId() {
@@ -27,12 +36,20 @@ public class Symbol {
         this.id = id;
     }
 
-    public int getValue() {
-        return value;
+    public int getIntValue() {
+        return intValue;
+    }
+    
+    public String getStringValue() {
+        return stringValue;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setIntValue(int intValue) {
+        this.intValue = intValue;
+    }
+    
+    public void setStringValue(String stringValue) {
+        this.stringValue = stringValue.replaceAll("\"", "");
     }
 
     public boolean isInitialized() {
@@ -43,4 +60,12 @@ public class Symbol {
         this.initialized = initialized;
     }
     
+    public boolean isString(){
+        return type.equals(STRING);
+    }
+    
+    public boolean isInt(){
+        return type.equals(INT);
+    }
+     
 }

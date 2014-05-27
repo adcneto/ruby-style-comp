@@ -30,9 +30,9 @@ public class ConditionVerifier {
     
     public boolean verify(){
         if(symbolLeft != null)
-            left = symbolLeft.getValue();
+            left = symbolLeft.getIntValue();
         if(symbolRight != null)
-            right = symbolRight.getValue(); 
+            right = symbolRight.getIntValue(); 
         
         if(operator.equals(">"))
             return left > right;

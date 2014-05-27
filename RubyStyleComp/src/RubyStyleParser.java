@@ -22,6 +22,7 @@ public class RubyStyleParser extends antlr.LLkParser       implements RubyStyleP
 	Program program;
 	ConditionVerifier cv;
 	ExpressionCalculator ec;
+	String type;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -60,11 +61,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			match(LITERAL_begin);
-			System.out.println("Entrou no begin");
 			{
 			_loop3:
 			do {
-				if (((LA(1) >= LITERAL_int && LA(1) <= LITERAL_float))) {
+				if ((LA(1)==LITERAL_int||LA(1)==LITERAL_string)) {
 					declare();
 				}
 				else {
@@ -93,11 +93,11 @@ public RubyStyleParser(ParserSharedInputState state) {
 															    String id = LT(0).getText();
 																	if (table.getById(id) != null){
 																		String errorMsg = "Variavel " + id + " ja foi declarada";
-																  	System.err.println(errorMsg);
+																  	
 																    throw new RecognitionException(errorMsg);
 																	}
 																	else{
-																  	table.add(new Symbol(id, 0, false));
+																  	table.add(new Symbol(id, 0, false, type));
 																	}
 														 	
 			{
@@ -110,11 +110,11 @@ public RubyStyleParser(ParserSharedInputState state) {
 																		    id = LT(0).getText();
 																				if (table.getById(id) != null){
 																					String errorMsg = "Variavel " + id + " ja foi declarada";
-																			  	System.err.println(errorMsg);
+																			  	
 																			    throw new RecognitionException(errorMsg);
 																				}
 																				else{
-																			  	table.add(new Symbol(id, 0, false));
+																			  	table.add(new Symbol(id, 0, false, type));
 																				}
 																	 	
 				}
@@ -137,13 +137,13 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			{
-			_loop11:
+			_loop12:
 			do {
 				if ((_tokenSet_2.member(LA(1)))) {
 					command();
 				}
 				else {
-					break _loop11;
+					break _loop12;
 				}
 				
 			} while (true);
@@ -159,25 +159,24 @@ public RubyStyleParser(ParserSharedInputState state) {
 		
 		
 		try {      // for error handling
+			{
 			switch ( LA(1)) {
 			case LITERAL_int:
 			{
 				match(LITERAL_int);
+				type = Symbol.INT;
 				break;
 			}
 			case LITERAL_string:
 			{
 				match(LITERAL_string);
-				break;
-			}
-			case LITERAL_float:
-			{
-				match(LITERAL_float);
+				type = Symbol.STRING;
 				break;
 			}
 			default:
 			{
 				throw new NoViableAltException(LT(1), getFilename());
+			}
 			}
 			}
 		}
@@ -239,7 +238,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 											    CommandAttr cmdAttr = new CommandAttr(symbol);
 													if (symbol == null){
 												  	String errorMsg = "Variavel nao foi declarada";
-													  System.err.println(errorMsg);
+													  
 													  throw new RecognitionException(errorMsg);
 													} else {
 														program.add(cmdAttr);
@@ -248,7 +247,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			match(Op_attr);
 			expr();
 			
-											if (symbol != null){
+											if (symbol != null && symbol.isInt()){
 												cmdAttr.setExpressionCalculator(ec);
 											}
 										
@@ -273,7 +272,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 																    symbol = table.getById(LT(0).getText());
 																		if (symbol == null){
 																	  	String errorMsg = "Variavel nao foi declarada";
-																		  System.err.println(errorMsg);
+																		  
 																		  throw new RecognitionException(errorMsg);
 																		}
 																		else{
@@ -317,7 +316,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 																  symbol = table.getById(LT(0).getText());
 																  if (symbol == null){
 																  	String errorMsg = "Variavel nao foi declarada";
-																	  System.err.println(errorMsg);
+																	  
 																	  throw new RecognitionException(errorMsg);
 																	}
 																	else{
@@ -345,7 +344,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 															
 			commands();
 			{
-			_loop26:
+			_loop25:
 			do {
 				if ((LA(1)==LITERAL_else)) {
 					match(LITERAL_else);
@@ -353,7 +352,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 					commands();
 				}
 				else {
-					break _loop26;
+					break _loop25;
 				}
 				
 			} while (true);
@@ -405,9 +404,14 @@ public RubyStyleParser(ParserSharedInputState state) {
 			{
 				match(T_num);
 				
-															ec = new ExpressionCalculator();
-															int num = Integer.parseInt(LT(0).getText());
-															ec.values.add(num);
+															if(symbol.isInt()){
+																ec = new ExpressionCalculator();
+																int num = Integer.parseInt(LT(0).getText());
+																ec.values.add(num);
+															} else {
+																String errorMsg = "Variavel nao e um inteiro";
+												  			throw new RecognitionException(errorMsg);			
+															}
 														
 				break;
 			}
@@ -415,15 +419,30 @@ public RubyStyleParser(ParserSharedInputState state) {
 			{
 				match(T_id);
 				
-												symbol = table.getById(LT(0).getText());
-												if (symbol == null){
+												Symbol rightSymbol = table.getById(LT(0).getText());
+												if (rightSymbol == null){
 											  	String errorMsg = "Variavel nao foi declarada";
-												  System.err.println(errorMsg);
 												  throw new RecognitionException(errorMsg);
-												} else {
+												} else if(rightSymbol.getType().equals(symbol.getType())) {
 													ec = new ExpressionCalculator();
-													ec.values.add(symbol);
+													ec.values.add(rightSymbol);
+												} else {
+													String errorMsg = "Tipos incompativeis";
+												  throw new RecognitionException(errorMsg);
 												}
+											
+				break;
+			}
+			case T_text:
+			{
+				match(T_text);
+				
+												if(symbol.isString()){
+													symbol.setStringValue(LT(0).getText());
+												} else {
+													String errorMsg = "Variavel nao e uma string";
+												  throw new RecognitionException(errorMsg);			
+												} 
 											
 				break;
 			}
@@ -434,7 +453,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 			}
 			}
 			{
-			_loop18:
+			_loop19:
 			do {
 				if ((LA(1)==Op_arit)) {
 					match(Op_arit);
@@ -454,13 +473,15 @@ public RubyStyleParser(ParserSharedInputState state) {
 					{
 						match(T_id);
 						
-													 		symbol = table.getById(LT(0).getText());
+													 		Symbol rightSymbol = table.getById(LT(0).getText());
 															if (symbol == null){
 														  	String errorMsg = "Variavel nao foi declarada";
-															  System.err.println(errorMsg);
 															  throw new RecognitionException(errorMsg);
+															} else if(rightSymbol.isInt()) {
+																ec.values.add(rightSymbol);
 															} else {
-																ec.values.add(symbol);
+																String errorMsg = "Variavel nao e um inteiro";
+														  	throw new RecognitionException(errorMsg);
 															} 	
 													
 						break;
@@ -473,50 +494,19 @@ public RubyStyleParser(ParserSharedInputState state) {
 					}
 				}
 				else {
-					break _loop18;
+					break _loop19;
 				}
 				
 			} while (true);
 			}
-			ec.operators.add(null);
+			
+													if(ec != null)
+														ec.operators.add(null);
+												
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
 			recover(ex,_tokenSet_5);
-		}
-	}
-	
-	public final void term() throws RecognitionException, TokenStreamException {
-		
-		
-		try {      // for error handling
-			{
-			switch ( LA(1)) {
-			case T_id:
-			{
-				match(T_id);
-				break;
-			}
-			case T_num:
-			{
-				match(T_num);
-				break;
-			}
-			case T_text:
-			{
-				match(T_text);
-				break;
-			}
-			default:
-			{
-				throw new NoViableAltException(LT(1), getFilename());
-			}
-			}
-			}
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_0);
 		}
 	}
 	
@@ -533,7 +523,7 @@ public RubyStyleParser(ParserSharedInputState state) {
 											    symbol = table.getById(LT(0).getText());
 													if (symbol == null){
 												  	String errorMsg = "Variavel nao foi declarada";
-													  System.err.println(errorMsg);
+													  
 													  throw new RecognitionException(errorMsg);
 													} else {
 														 cv = new ConditionVerifier("0", symbol);
@@ -603,11 +593,10 @@ public RubyStyleParser(ParserSharedInputState state) {
 		"T_comma",
 		"\"int\"",
 		"\"string\"",
-		"\"float\"",
 		"Op_attr",
 		"T_num",
-		"Op_arit",
 		"T_text",
+		"Op_arit",
 		"\"puts\"",
 		"\"gets\"",
 		"\"if\"",
@@ -625,17 +614,17 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 1279840L, 0L};
+		long[] data = { 639840L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 1278016L, 0L};
+		long[] data = { 639040L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = { 2883616L, 0L};
+		long[] data = { 1441824L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
@@ -645,12 +634,12 @@ public RubyStyleParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 	private static final long[] mk_tokenSet_5() {
-		long[] data = { 4161632L, 0L};
+		long[] data = { 2080864L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 4161600L, 0L};
+		long[] data = { 2080832L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());

@@ -23,7 +23,8 @@ public class CommandAttr extends Command{
     }
     
     public void run(){
-        sym.setValue(ec.calculate());
+        if(sym.isInt())
+            sym.setIntValue(ec.calculate());
         sym.setInitialized(true);
     }
     

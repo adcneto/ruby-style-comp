@@ -5,6 +5,7 @@ class RubyStyleParser extends Parser;
 	Program program;
 	ConditionVerifier cv;
 	ExpressionCalculator ec;
+	String type;
 
 	public void init(){
 	  table = new SymbolTable();
@@ -16,18 +17,18 @@ class RubyStyleParser extends Parser;
 	}
 }
 
-program		:		"begin" {System.out.println("Entrou no begin");} (declare)* commands "end"
+program		:		"begin" (declare)* commands "end"
 					;
 
 declare		:		(type T_id {
 												    String id = LT(0).getText();
 														if (table.getById(id) != null){
 															String errorMsg = "Variavel " + id + " ja foi declarada";
-													  	System.err.println(errorMsg);
+													  	
 													    throw new RecognitionException(errorMsg);
 														}
 														else{
-													  	table.add(new Symbol(id, 0, false));
+													  	table.add(new Symbol(id, 0, false, type));
 														}
 											 	 }
 
@@ -35,17 +36,18 @@ declare		:		(type T_id {
 													    id = LT(0).getText();
 															if (table.getById(id) != null){
 																String errorMsg = "Variavel " + id + " ja foi declarada";
-														  	System.err.println(errorMsg);
+														  	
 														    throw new RecognitionException(errorMsg);
 															}
 															else{
-														  	table.add(new Symbol(id, 0, false));
+														  	table.add(new Symbol(id, 0, false, type));
 															}
 												 	 }
 							)*)
 					;
 
-type 			:		"int" | "string" | "float"
+type 			:		("int"     { type = Symbol.INT; }
+						 	| "string" { type = Symbol.STRING; })
 					;
 
 commands	:		(command)*
@@ -59,7 +61,7 @@ cmdAttr		:		T_id{
 								    CommandAttr cmdAttr = new CommandAttr(symbol);
 										if (symbol == null){
 									  	String errorMsg = "Variavel nao foi declarada";
-										  System.err.println(errorMsg);
+										  
 										  throw new RecognitionException(errorMsg);
 										} else {
 											program.add(cmdAttr);
@@ -67,28 +69,45 @@ cmdAttr		:		T_id{
 									} 
 
 							Op_attr expr {
-								if (symbol != null){
+								if (symbol != null && symbol.isInt()){
 									cmdAttr.setExpressionCalculator(ec);
 								}
 							}
 					;
 
+// expr : (T_num | T_id | T_text) (Op_arit (T_num | T_id))*
 expr			:		(T_num {
-											ec = new ExpressionCalculator();
-											int num = Integer.parseInt(LT(0).getText());
-											ec.values.add(num);
+											if(symbol.isInt()){
+												ec = new ExpressionCalculator();
+												int num = Integer.parseInt(LT(0).getText());
+												ec.values.add(num);
+											} else {
+												String errorMsg = "Variavel nao e um inteiro";
+								  			throw new RecognitionException(errorMsg);			
+											}
 										}
 							|
 							T_id{
-								symbol = table.getById(LT(0).getText());
-								if (symbol == null){
+								Symbol rightSymbol = table.getById(LT(0).getText());
+								if (rightSymbol == null){
 							  	String errorMsg = "Variavel nao foi declarada";
-								  System.err.println(errorMsg);
 								  throw new RecognitionException(errorMsg);
-								} else {
+								} else if(rightSymbol.getType().equals(symbol.getType())) {
 									ec = new ExpressionCalculator();
-									ec.values.add(symbol);
+									ec.values.add(rightSymbol);
+								} else {
+									String errorMsg = "Tipos incompativeis";
+								  throw new RecognitionException(errorMsg);
 								}
+							}
+							|
+							T_text{
+								if(symbol.isString()){
+									symbol.setStringValue(LT(0).getText());
+								} else {
+									String errorMsg = "Variavel nao e uma string";
+								  throw new RecognitionException(errorMsg);			
+								} 
 							})
 							(Op_arit { ec.operators.add(LT(0).getText()); }
 								(T_num{ 
@@ -97,28 +116,29 @@ expr			:		(T_num {
 							  }
 							  |
 							  T_id{
-							 		symbol = table.getById(LT(0).getText());
+							 		Symbol rightSymbol = table.getById(LT(0).getText());
 									if (symbol == null){
 								  	String errorMsg = "Variavel nao foi declarada";
-									  System.err.println(errorMsg);
 									  throw new RecognitionException(errorMsg);
+									} else if(rightSymbol.isInt()) {
+										ec.values.add(rightSymbol);
 									} else {
-										ec.values.add(symbol);
+										String errorMsg = "Variavel nao e um inteiro";
+								  	throw new RecognitionException(errorMsg);
 									} 	
 							  })
-								)* {ec.operators.add(null);}
+								)* {
+										if(ec != null)
+											ec.operators.add(null);
+									 }
 							
-					;
-
-
-term 			:		(T_id | T_num | T_text)
 					;
 
 cmdWrite	:		"puts" (T_id {
 												    symbol = table.getById(LT(0).getText());
 														if (symbol == null){
 													  	String errorMsg = "Variavel nao foi declarada";
-														  System.err.println(errorMsg);
+														  
 														  throw new RecognitionException(errorMsg);
 														}
 														else{
@@ -136,7 +156,7 @@ cmdRead		:		"gets" T_id {
 													  symbol = table.getById(LT(0).getText());
 													  if (symbol == null){
 													  	String errorMsg = "Variavel nao foi declarada";
-														  System.err.println(errorMsg);
+														  
 														  throw new RecognitionException(errorMsg);
 														}
 														else{
@@ -178,7 +198,7 @@ cond 		  :		(T_id{
 							    symbol = table.getById(LT(0).getText());
 									if (symbol == null){
 								  	String errorMsg = "Variavel nao foi declarada";
-									  System.err.println(errorMsg);
+									  
 									  throw new RecognitionException(errorMsg);
 									} else {
 										 cv = new ConditionVerifier("0", symbol);
